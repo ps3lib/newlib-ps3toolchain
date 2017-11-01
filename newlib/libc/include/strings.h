@@ -47,7 +47,7 @@ int	 bcmp(const void *, const void *, size_t) __pure;	/* LEGACY */
 void	 bcopy(const void *, void *, size_t);			/* LEGACY */
 void	 bzero(void *, size_t);					/* LEGACY */
 #endif
-#if __BSD_VISIBLE
+#if __BSD_VISIBLE && !__SSP_FORTIFY_LEVEL
 void	 explicit_bzero(void *, size_t);
 #endif
 #if __MISC_VISIBLE || __POSIX_VISIBLE < 200809 || __XSI_VISIBLE >= 700
@@ -74,5 +74,9 @@ int	 strcasecmp_l (const char *, const char *, locale_t);
 int	 strncasecmp_l (const char *, const char *, size_t, locale_t);
 #endif
 __END_DECLS
+
+#if _FORTIFY_SOURCE > 0
+#include <ssp/strings.h>
+#endif
 
 #endif /* _STRINGS_H_ */
