@@ -13,6 +13,10 @@ extern "C" {
 #include <sys/_types.h>
 #include <stddef.h>
 
+#if _FORTIFY_SOURCE > 0
+#include <ssp/unistd.h>
+#endif
+
 extern char **environ;
 
 void	_EXFUN(_exit, (int __status ) _ATTRIBUTE ((__noreturn__)));
@@ -93,7 +97,9 @@ int     _EXFUN(fdatasync, (int __fd));
 #if __GNU_VISIBLE
 char *  _EXFUN(get_current_dir_name, (void));
 #endif
+#if !__SSP_FORTIFY_LEVEL
 char *  _EXFUN(getcwd, (char *__buf, size_t __size ));
+#endif
 #if __BSD_VISIBLE || (__XSI_VISIBLE && __XSI_VISIBLE < 500)
 int	_EXFUN(getdomainname ,(char *__name, size_t __len));
 #endif
@@ -170,7 +176,9 @@ int     _EXFUN(pipe2, (int __fildes[2], int flags));
 #endif
 ssize_t _EXFUN(pread, (int __fd, void *__buf, size_t __nbytes, off_t __offset));
 ssize_t _EXFUN(pwrite, (int __fd, const void *__buf, size_t __nbytes, off_t __offset));
+#if !__SSP_FORTIFY_LEVEL
 _READ_WRITE_RETURN_TYPE _EXFUN(read, (int __fd, void *__buf, size_t __nbyte ));
+#endif
 #if __BSD_VISIBLE
 int	_EXFUN(rresvport, (int *__alport));
 int	_EXFUN(revoke, (char *__path));
@@ -290,8 +298,10 @@ void    _EXFUN(sync, (void));
 #endif
 
 #if __BSD_VISIBLE || __POSIX_VISIBLE >= 200112 || __XSI_VISIBLE >= 4
+#if !__SSP_FORTIFY_LEVEL
 ssize_t _EXFUN(readlink, (const char *__restrict __path,
                           char *__restrict __buf, size_t __buflen));
+#endif
 int     _EXFUN(symlink, (const char *__name1, const char *__name2));
 #endif
 #if __ATFILE_VISIBLE
